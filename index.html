@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cristina Qian Huang</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: estudio morado 3D — fondo con orbes animados, cabecera con cubo 3D giratorio y terminal inclinada; cada sección tiene su propio color (--c) y sus tarjetas se elevan en 3D */
+:root{
+  --bg:#1a0b33; --bg2:#2a1252; --surface:#24123f; --surface2:#2e1a50; --fg:#f3edfd; --muted:#b4a6d2; --line:#3b2763;
+  --accent:#b197fc; --accent-2:#c084fc; --accent-soft:#33205c; --cable:#c084fc; --ok:#c084fc;
+  --orb1:#7c3aed; --orb2:#7e22ce; --orb3:#5b21b6; --shadow:rgba(0,0,0,.55);
+  --term-bg:#12082a; --term-fg:#e2d9f5; --term-dim:#8577a3;
+  --c:#8b5cf6;
+  --display:"Sora", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color-scheme:dark;
+}
+
+/* colores por sección */
+[data-c="violeta"]{--c:#8b5cf6}
+[data-c="indigo"]{--c:#6d28d9}
+[data-c="fucsia"]{--c:#a855f7}
+[data-c="rosa"]{--c:#9333ea}
+[data-c="azul"]{--c:#7c3aed}
+[data-c="naranja"]{--c:#9d4edd}
+[data-c="cian"]{--c:#5b21b6}
+[data-c="esmeralda"]{--c:#7e22ce}
+[data-c="purpura"]{--c:#a855f7}
+[data-c]{--c-ink:color-mix(in oklab,var(--c) 72%,var(--fg));--c-soft:color-mix(in oklab,var(--c) 15%,transparent);--c-line:color-mix(in oklab,var(--c) 35%,var(--line))}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:clip;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bg{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(1200px 700px at 50% -10%,var(--bg2),var(--bg) 70%)}
+.bg i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;animation:drift 26s ease-in-out infinite alternate}
+.bg i:nth-child(1){width:46vw;height:46vw;left:-10vw;top:-12vw;background:var(--orb1)}
+.bg i:nth-child(2){width:38vw;height:38vw;right:-12vw;top:22vh;background:var(--orb2);animation-duration:32s;animation-delay:-8s}
+.bg i:nth-child(3){width:34vw;height:34vw;left:30vw;bottom:-18vw;background:var(--orb3);animation-duration:38s;animation-delay:-16s}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(6vw,4vh,0) scale(1.12)}100%{transform:translate3d(-4vw,8vh,0) scale(.94)}}
+
+.wrap{max-width:1120px;margin:0 auto;padding-block:24px 72px;display:flex;flex-direction:column;gap:96px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:6px}
+
+/* nav */
+nav{position:sticky;top:max(10px,env(safe-area-inset-top,0px));z-index:20;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:13px;color:var(--muted);padding:10px 16px;border:1px solid var(--line);border-radius:14px;
+  background:color-mix(in oklab,var(--surface) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px -18px var(--shadow)}
+nav .host{display:flex;align-items:center;gap:8px;color:var(--fg)}
+.led{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--ok) 0%,transparent)}}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;padding:4px 9px;border-radius:8px;transition:color .25s,background .25s}
+nav a:hover{color:var(--fg);background:var(--accent-soft)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding-top:24px}
+.hero>*{min-width:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  padding:6px 12px;border:1px solid color-mix(in oklab,var(--accent) 40%,transparent);border-radius:999px;background:var(--accent-soft)}
+.hero h1{font-size:clamp(46px,7.2vw,90px);font-weight:800;letter-spacing:-.035em;margin-top:18px}
+/* nombre 3D */
+:root{--ext:#3b1a6e;--ext2:#24104a}
+.name3d{perspective:900px;margin-top:18px}
+.hero h1{margin:0;transform-style:preserve-3d;transform:rotateX(var(--hx,0deg)) rotateY(var(--hy,0deg));transition:transform .8s cubic-bezier(.2,.8,.2,1);animation:sway 9s ease-in-out infinite}
+@keyframes sway{0%,100%{rotate:x 6deg}25%{rotate:y -7deg}50%{rotate:x -3deg}75%{rotate:y 6deg}}
+.hero h1 .ln{display:block;white-space:nowrap}
+.hero h1 .l{display:inline-block;color:var(--fg);transform-style:preserve-3d;
+  text-shadow:1px 1px 0 var(--ext),2px 2px 0 var(--ext),3px 3px 0 var(--ext),4px 4px 0 var(--ext2),5px 5px 0 var(--ext2),6px 6px 0 var(--ext2),10px 16px 24px var(--shadow);
+  animation:wave 3.6s ease-in-out infinite;animation-delay:calc(var(--i)*90ms);transition:color .3s,translate .3s}
+.hero h1 .grad .l{color:color-mix(in oklab,var(--accent) calc(100% - var(--x)*100%),var(--accent-2))}
+@keyframes wave{0%,60%,100%{transform:translateY(0) translateZ(0)}30%{transform:translateY(-10px) translateZ(30px)}}
+.hero h1 .l:hover{color:var(--accent-2);animation-play-state:paused;translate:0 -14px}
+.hero h1 .sp{display:inline-block;width:.28em}
+.lede{margin-top:20px;font-size:18px;color:var(--muted);max-width:52ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{font-family:var(--mono);font-size:12px;padding:6px 12px;border:1px solid var(--c-line);border-radius:999px;cursor:default;color:var(--fg);
+  background:color-mix(in oklab,var(--surface) 80%,transparent);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s,color .3s,border-color .3s,box-shadow .35s}
+.chip::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:7px;vertical-align:1px;transition:background .3s}
+.chip:hover{transform:translateY(-4px) perspective(400px) rotateX(10deg) scale(1.06);background:linear-gradient(135deg,var(--c),color-mix(in oklab,var(--c) 60%,var(--accent-2)));color:#fff;border-color:transparent;box-shadow:0 12px 22px -10px var(--c)}
+.chip:hover::before{background:#fff}
+[data-c="ambar"]{--c:#9f67ff}
+.total{margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:14px;color:var(--muted);perspective:700px}
+.total b{position:relative;display:inline-block;font-family:var(--display);font-size:clamp(84px,12vw,140px);line-height:.9;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(100deg,#8b5cf6,#a855f7,#9333ea,#c084fc,#a78bfa,#6d28d9,#7c3aed,#8b5cf6);background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(2px 2px 0 var(--ext)) drop-shadow(2px 2px 0 var(--ext)) drop-shadow(2px 2px 0 var(--ext2)) drop-shadow(0 0 22px color-mix(in oklab,var(--accent-2) 45%,transparent)) drop-shadow(0 18px 26px var(--shadow));
+  animation:rainbow 6s linear infinite,bob 4s ease-in-out infinite;transform-style:preserve-3d}
+@keyframes rainbow{to{background-position:300% 0}}
+@keyframes bob{0%,100%{transform:rotateX(8deg) rotateY(-10deg) translateY(0)}50%{transform:rotateX(-6deg) rotateY(10deg) translateY(-8px)}}
+.total span{max-width:24ch;line-height:1.5}
+.total span strong{display:block;font-family:var(--display);font-size:22px;color:var(--fg);letter-spacing:-.01em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{font-family:var(--body);font-weight:600;font-size:15px;padding:12px 20px;border-radius:12px;text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.btn.primary{background:linear-gradient(120deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 12px 28px -12px var(--accent-2),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 36px -14px var(--accent-2),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.ghost:hover{transform:translateY(-3px);border-color:var(--accent)}
+
+/* escenario 3D */
+.stage{position:relative;perspective:1200px;padding-top:64px}
+.cube-wrap{position:absolute;top:0;right:4%;width:140px;height:140px;perspective:900px;z-index:3;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-14px)}}
+.cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:spin 22s linear infinite}
+@keyframes spin{from{transform:rotateX(-22deg) rotateY(0)}to{transform:rotateX(-22deg) rotateY(360deg)}}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:14px;
+  font-family:var(--mono);font-size:12px;color:#fff;letter-spacing:.06em;text-transform:uppercase;backface-visibility:visible;
+  border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 0 30px rgba(255,255,255,.12)}
+.face b{font-family:var(--display);font-size:34px;letter-spacing:-.02em;line-height:1}
+.face:nth-child(1){transform:translateZ(70px);background:linear-gradient(135deg,#6d28d9cc,#7c3aedcc)}
+.face:nth-child(2){transform:rotateY(90deg) translateZ(70px);background:linear-gradient(135deg,#c084fccc,#9333eacc)}
+.face:nth-child(3){transform:rotateY(180deg) translateZ(70px);background:linear-gradient(135deg,#6d28d9cc,#6d28d9cc)}
+.face:nth-child(4){transform:rotateY(-90deg) translateZ(70px);background:linear-gradient(135deg,#a855f7cc,#9333eacc)}
+.face:nth-child(5){transform:rotateX(90deg) translateZ(70px);background:linear-gradient(135deg,#8b5cf6cc,#a855f7cc)}
+.face:nth-child(6){transform:rotateX(-90deg) translateZ(70px);background:linear-gradient(135deg,#a78bfacc,#6d28d9cc)}
+
+/* terminal */
+.term{position:relative;z-index:2;background:var(--term-bg);color:var(--term-fg);border-radius:16px;font-family:var(--mono);font-size:13.5px;overflow:hidden;
+  border:1px solid color-mix(in oklab,var(--accent) 35%,transparent);
+  transform:rotateY(-10deg) rotateX(5deg);transform-origin:center;transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  box-shadow:30px 40px 70px -30px var(--shadow),0 0 0 1px rgba(255,255,255,.03),0 0 60px -20px var(--accent)}
+.stage:hover .term{transform:rotateY(-3deg) rotateX(2deg)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid #251a3d;color:var(--term-dim);font-size:12px}
+.term-bar i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.term-bar i:nth-child(1){background:#c084fc}.term-bar i:nth-child(2){background:#c084fc}.term-bar i:nth-child(3){background:#a78bfa}
+.term-out{height:300px;overflow-y:auto;padding:14px 16px;white-space:pre-wrap;word-break:break-word}
+.term-out .p{color:#c4b5fd}.term-out .d{color:var(--term-dim)}.term-out .k{color:#d8b4fe}.term-out .b{color:#c4b5fd}
+.term-in{display:flex;gap:8px;align-items:center;padding:10px 16px;border-top:1px solid #251a3d}
+.term-in label{color:#c4b5fd;white-space:nowrap}
+.term-in input{flex:1;min-width:0;background:transparent;border:0;color:var(--term-fg);font:inherit;outline:none;caret-color:#d8b4fe}
+.hints{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+.hints button{font:inherit;font-size:11.5px;background:#1b1132;color:var(--term-fg);border:1px solid #2f2350;border-radius:7px;padding:3px 9px;cursor:pointer;transition:border-color .2s,transform .2s}
+.hints button:hover{border-color:#c084fc;transform:translateY(-1px)}
+
+/* secciones */
+section[data-c]{position:relative}
+section[data-c]::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:-60px -16px;
+  background:radial-gradient(ellipse 46% 46% at 40% 50%,color-mix(in oklab,var(--c) 14%,transparent),transparent)}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+.port{font-family:var(--mono);font-size:12px;color:var(--c-ink,var(--accent));background:var(--c-soft,var(--accent-soft));border:1px solid var(--c-line,var(--line));padding:4px 10px;border-radius:8px}
+.sec-head h2{font-size:clamp(30px,4.4vw,46px);font-weight:700;letter-spacing:-.025em;position:relative;padding-bottom:6px}
+.sec-head h2::after{content:"";position:absolute;left:0;bottom:-4px;height:4px;width:56px;border-radius:4px;background:linear-gradient(90deg,var(--c),color-mix(in oklab,var(--c) 30%,var(--accent-2)))}
+.sec-head p{flex:0 0 100%;color:var(--muted);padding-right:max(0px,calc(100% - 66ch));margin-top:8px}
+.sub{font-size:19px;margin:36px 0 14px;color:var(--fg);font-weight:600;display:flex;align-items:center;gap:10px}
+.sub::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);transform:rotate(45deg)}
+
+/* tarjeta 3D base */
+.card3d,.spec,.year,.skill-group,.proj,.ws,.topo{background:color-mix(in oklab,var(--surface) 88%,transparent);border:1px solid var(--line);border-radius:16px;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s,border-color .4s;box-shadow:0 14px 34px -24px var(--shadow)}
+.year:hover,.skill-group:hover,.proj:hover,.ws:hover,.spec:hover{border-color:var(--c-line,var(--accent));box-shadow:0 28px 50px -26px var(--shadow),0 0 0 1px var(--c-soft,transparent),0 18px 40px -30px var(--c)}
+.ws:hover,.proj:hover,.year:hover{--tz:14px}
+
+/* sobre mí */
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:start}
+.about>*{min-width:0}
+.about .text{display:flex;flex-direction:column;gap:14px;font-size:17px;max-width:62ch}
+.spec{font-family:var(--mono);font-size:13px;margin:0;overflow:hidden}
+.spec div{display:flex;justify-content:space-between;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.spec div:last-child{border-bottom:0}
+.spec dt{color:var(--muted)}.spec dd{margin:0;text-align:right}
+
+/* formación */
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.year{padding:22px 20px;min-width:0;position:relative;overflow:hidden}
+.year::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--c),var(--accent-2));opacity:.55}
+.year.now{border-color:var(--c-line)}
+.year.now::before{opacity:1}
+.year .yr{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.year h3{font-size:21px;margin:6px 0 4px}
+.year .deg{font-size:13px;color:var(--c-ink);font-weight:600}
+.year ul{margin:12px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.year a{color:var(--c-ink)}
+.badge-now{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:var(--c);color:#fff;padding:2px 8px;border-radius:5px;margin-left:6px;vertical-align:middle}
+
+/* habilidades */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.skill-group{padding:22px;min-width:0}
+.skill-group h3{font-size:18px;margin-bottom:16px;display:flex;gap:10px;align-items:center}
+.skill-group h3 svg{flex:none;color:var(--c-ink);padding:6px;width:32px;height:32px;border-radius:9px;background:var(--c-soft)}
+.skill-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.skill-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px}
+.meter{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.meter i{height:6px;border-radius:3px;background:var(--line)}
+.meter i.on{background:linear-gradient(90deg,var(--c),var(--accent-2))}
+.lvl{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+
+/* habilidades en pestañas */
+.skills{display:flex;flex-direction:column;gap:18px}
+.sk-tabs{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px}
+.sk-tabs button{display:flex;align-items:center;gap:14px;text-align:left;padding:16px 18px;border-radius:16px;cursor:pointer;font:inherit;color:var(--fg);
+  background:color-mix(in oklab,var(--surface) 88%,transparent);border:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s,background .3s}
+.sk-tabs button:hover{transform:translateY(-3px);border-color:var(--c-line)}
+.sk-tabs button[aria-expanded="true"]{background:linear-gradient(135deg,var(--c),color-mix(in oklab,var(--c) 55%,var(--accent-2)));color:#fff;border-color:transparent;
+  transform:translateY(-4px) perspective(700px) rotateX(6deg);box-shadow:0 22px 40px -20px var(--c)}
+.sk-tabs b{display:block;font-family:var(--display);font-size:18px;font-weight:700;line-height:1.2}
+.sk-tabs small{font-family:var(--mono);font-size:11.5px;opacity:.75}
+.sk-ico{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--c-soft);color:var(--c-ink)}
+.sk-ico svg{width:24px;height:24px}
+.sk-tabs button[aria-expanded="true"] .sk-ico{background:rgba(255,255,255,.2);color:#fff}
+.sk-panel{padding:24px;border-radius:20px;border:1px solid var(--c-line);background:color-mix(in oklab,var(--surface) 80%,transparent);animation:panelIn .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes panelIn{from{opacity:.3;transform:perspective(900px) rotateX(8deg) translateY(12px)}}
+.sk-desc{color:var(--muted);margin-bottom:18px;max-width:70ch}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.sk-card{display:flex;flex-direction:column;gap:6px;padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--line);min-width:0;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s,border-color .3s;
+  animation:cardIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
+@keyframes cardIn{from{opacity:.2;translate:0 18px;scale:.96}}
+.sk-card:hover{border-color:var(--c-line);box-shadow:0 24px 44px -26px var(--shadow),0 16px 36px -28px var(--c)}
+.sk-img{width:100%;aspect-ratio:16/9;max-width:100%;border-radius:12px;display:grid;place-items:center;margin-bottom:8px;position:relative;overflow:hidden;color:#fff;
+  background:radial-gradient(circle at 25% 20%,rgba(255,255,255,.35),transparent 45%),linear-gradient(135deg,var(--c),color-mix(in oklab,var(--c) 45%,var(--accent-2)))}
+.sk-img::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 2px,transparent 2px 10px)}
+.sk-img svg{width:44%;max-width:72px;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.sk-card:hover .sk-img svg{transform:translateY(-3px) scale(1.08) rotate(-4deg)}
+.sk-card h3{font-size:17px;font-family:var(--body);font-weight:600}
+.sk-card p{font-size:13.5px;color:var(--muted);flex:1}
+.sk-lvl{display:flex;align-items:center;gap:10px;margin-top:8px}
+.sk-lvl .meter{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.pr-blocks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.pr-blocks button{display:flex;align-items:center;gap:12px;text-align:left;padding:18px 16px;min-width:0;border-radius:18px;cursor:pointer;font:inherit;color:var(--fg);
+  background:color-mix(in oklab,var(--surface) 88%,transparent);border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .3s}
+.pr-blocks button:hover{transform:translateY(-4px);border-color:var(--c-line)}
+.pr-blocks button[aria-expanded="true"]{background:linear-gradient(135deg,#4c1d95,var(--c) 60%,#a855f7);color:#fff;border-color:transparent;
+  transform:translateY(-6px) perspective(700px) rotateX(8deg);box-shadow:0 26px 46px -20px var(--c)}
+.pr-blocks button[aria-expanded="true"] .sk-ico{background:rgba(255,255,255,.2);color:#fff}
+.pb-txt{flex:1;min-width:0}
+.pb-txt small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.pb-txt b{display:block;font-family:var(--display);font-size:18px;line-height:1.2;overflow-wrap:break-word}
+.pb-n{flex:none;font-family:var(--display);font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums;opacity:.9}
+.drawer{display:grid;grid-template-rows:1fr;animation:drawerIn .55s cubic-bezier(.2,.8,.2,1)}
+.drawer-in{min-height:0;overflow:hidden;padding:10px;margin:-10px}
+.drawer.closing{animation:drawerOut .3s ease forwards}
+@keyframes drawerIn{from{grid-template-rows:0fr;opacity:0}}
+@keyframes drawerOut{to{grid-template-rows:0fr;opacity:0}}
+.chev{flex:none;width:10px;height:10px;margin-left:auto;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-3px) rotate(45deg);opacity:.6;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+[aria-expanded="true"] .chev{transform:translateY(2px) rotate(225deg);opacity:1}
+.pb-n+.chev{margin-left:4px}
+.pb-txt b+small{margin-top:2px}
+.pb-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 20px;flex-wrap:wrap;margin-bottom:18px}
+.pb-head p{color:var(--muted);max-width:70ch}
+.pb-head span{font-family:var(--mono);font-size:12.5px;color:var(--c-ink);background:var(--c-soft);border:1px solid var(--c-line);padding:4px 10px;border-radius:8px}
+@media (max-width:900px){.pr-blocks{grid-template-columns:1fr 1fr}.pr-blocks button[aria-expanded="true"]{transform:translateY(-3px)}}
+@media (max-width:420px){.pr-blocks{grid-template-columns:1fr}}
+.pr-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.pr-code{position:absolute;top:10px;left:10px;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.04em;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.3);padding:2px 8px;border-radius:6px;backdrop-filter:blur(4px)}
+.pr-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pr-tags span{font-family:var(--mono);font-size:11px;background:var(--c-soft);color:var(--c-ink);padding:2px 8px;border-radius:5px}
+@media (max-width:1000px){.sk-tabs{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}}
+@media (max-width:760px){.sk-tabs{grid-template-columns:1fr}.sk-tabs button[aria-expanded="true"]{transform:none}}
+
+/* filtros */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{font-family:var(--mono);font-size:12.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:color-mix(in oklab,var(--surface) 85%,transparent);color:var(--fg);cursor:pointer;transition:all .3s}
+.filters button:hover{border-color:var(--c-line)}
+.filters button[aria-pressed="true"]{background:var(--c);color:#fff;border-color:var(--c);box-shadow:0 8px 20px -10px var(--c)}
+
+/* proyectos */
+.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.proj{padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.proj .meta{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.proj h3{font-size:21px}
+.proj p{color:var(--muted);font-size:15px}
+.proj pre{margin:0;background:var(--term-bg);color:var(--term-fg);font-family:var(--mono);font-size:12.5px;padding:12px 14px;border-radius:10px;overflow-x:auto}
+.proj .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.proj .tags span{font-family:var(--mono);font-size:11.5px;background:var(--c-soft);color:var(--c-ink);padding:3px 8px;border-radius:5px}
+
+/* laboratorios */
+.lab-top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:22px}
+.lab-top>*{min-width:0}
+.lab-stats{display:flex;flex-wrap:wrap;gap:12px}
+.lab-stats div{display:flex;flex-direction:column;padding:12px 16px;border-radius:14px;background:var(--c-soft);border:1px solid var(--c-line);min-width:96px}
+.lab-stats b{font-family:var(--display);font-size:32px;line-height:1;font-variant-numeric:tabular-nums;color:var(--fg)}
+.lab-stats span{font-family:var(--mono);font-size:11px;color:var(--c-ink);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.topo{padding:18px;overflow-x:auto;margin-bottom:24px}
+.topo svg{display:block;min-width:620px;width:100%;height:auto}
+.topo text{font-family:var(--mono);font-size:11px;fill:var(--fg)}
+.topo .dim{fill:var(--muted)}
+.lab-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.ws{display:grid;grid-template-columns:62px 1fr;gap:4px 14px;padding:18px 18px 16px;min-width:0}
+.ws .code{font-family:var(--mono);font-size:11.5px;color:var(--c-ink);background:var(--c-soft);border-radius:7px;padding:3px 0;text-align:center;align-self:start;font-variant-numeric:tabular-nums}
+.ws h3{font-size:16.5px;font-family:var(--body);font-weight:600;line-height:1.35}
+.ws p{color:var(--muted);font-size:14px;grid-column:2}
+.ws .row{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:8px}
+.ws .tag{font-family:var(--mono);font-size:11px;background:var(--c-soft);color:var(--c-ink);padding:2px 8px;border-radius:5px}
+.ws a.doc{font-family:var(--mono);font-size:12px;text-decoration:none;color:var(--fg);border-bottom:2px solid var(--c);transition:color .2s}
+.ws a.doc:hover,.ws a.vid:hover{color:var(--c-ink)}
+.ws a.vid{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none}
+
+/* idiomas */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.duo>*{min-width:0}
+.duo>div{padding:22px}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.list li:last-child{border-bottom:0}
+.list li span:last-child{font-family:var(--mono);font-size:12.5px;color:var(--c-ink);text-align:right}
+.duo h3{font-size:20px;margin-bottom:8px}
+
+/* contacto */
+.contact{position:relative;overflow:hidden;color:#f5f0ff;border-radius:22px;padding:clamp(26px,5vw,52px);display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;
+  background:linear-gradient(130deg,#4c1d95,#7c3aed 45%,#7e22ce);background-size:180% 180%;animation:flow 14s ease-in-out infinite;
+  box-shadow:0 40px 80px -40px #7c3aed}
+@keyframes flow{50%{background-position:100% 100%}}
+.contact::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 85% 10%,rgba(255,255,255,.18),transparent 70%);pointer-events:none}
+.contact>*{min-width:0;position:relative;z-index:1}
+.contact h2{font-size:clamp(32px,5vw,52px);color:#fff}
+.contact p{color:#e9ddff;margin-top:12px;max-width:46ch}
+.links{display:flex;flex-direction:column;gap:10px;font-family:var(--mono);font-size:14px}
+.links div{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid rgba(255,255,255,.25);border-radius:12px;align-items:center;background:rgba(20,8,40,.25);backdrop-filter:blur(6px)}
+.links .k{color:#d8c7ff}
+.links .v{color:#fff;word-break:break-all;text-align:right}
+.links button{font:inherit;font-size:11px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:3px 9px;cursor:pointer;flex:none}
+footer{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* aparición al hacer scroll */
+@supports (animation-timeline: view()){
+  .ws,.proj,.year,.spec,.duo>div,.topo,.sec-head,.lab-stats div,.sk-tabs{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+}
+@keyframes rise{from{opacity:0;translate:0 46px;rotate:x 14deg}to{opacity:1;translate:0 0;rotate:x 0deg}}
+.hero>*{animation:enter 1s cubic-bezier(.2,.8,.2,1) both}
+.hero>.stage{animation-delay:.15s}
+@keyframes enter{from{opacity:.4;translate:0 24px}}
+
+@media (max-width:900px){
+  .hero,.about,.duo,.contact{grid-template-columns:1fr}
+  .skills{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr 1fr}
+  .term{transform:none}
+}
+@media (max-width:760px){.lab-list,.lab-top{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .skills,.projects,.timeline{grid-template-columns:1fr}
+  nav ul{display:none}
+  .term-out{height:240px}
+  .cube-wrap{width:100px;height:100px;right:0}
+  .face{font-size:10px}.face b{font-size:24px}
+  .face:nth-child(1){transform:translateZ(50px)}.face:nth-child(2){transform:rotateY(90deg) translateZ(50px)}
+  .face:nth-child(3){transform:rotateY(180deg) translateZ(50px)}.face:nth-child(4){transform:rotateY(-90deg) translateZ(50px)}
+  .face:nth-child(5){transform:rotateX(90deg) translateZ(50px)}.face:nth-child(6){transform:rotateX(-90deg) translateZ(50px)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .cube{transform:rotateX(-22deg) rotateY(-30deg)}
+}
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="wrap">
+  <nav aria-label="Principal">
+    <div class="host"><span class="led" aria-hidden="true"></span>cristina@portfolio:~$</div>
+    <ul>
+      <li><a href="#sobre-mi">sobre_mí</a></li>
+      <li><a href="#formacion">formación</a></li>
+      <li><a href="#habilidades">habilidades</a></li>
+      <li><a href="#practicas">prácticas</a></li>
+      <li><a href="#proyectos">proyectos</a></li>
+      <li><a href="#contacto">contacto</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" data-c="violeta">
+    <div>
+      <div class="eyebrow">Técnica en Sistemas · ASIR 2.º curso</div>
+      <div class="name3d"><h1 aria-label="Cristina Qian Huang"><span class="ln" aria-hidden="true">Cristina</span><span class="ln grad" aria-hidden="true">Qian Huang</span></h1></div>
+      <p class="lede">Tengo 19 años y llevo cuatro formándome en informática: primero Sistemas Microinformáticos y Redes, ahora el último año de Administración de Sistemas Informáticos en Red. Me gusta que los sistemas funcionen, sean seguros y estén bien documentados.</p>
+      <div class="chips" aria-label="Áreas principales">
+        <span class="chip" data-c="naranja">Linux</span><span class="chip" data-c="azul">Windows Server</span><span class="chip" data-c="indigo">Redes</span><span class="chip" data-c="rosa">Ciberseguridad</span><span class="chip" data-c="violeta">Virtualización</span><span class="chip" data-c="cian">Docker</span><span class="chip" data-c="ambar">AWS</span><span class="chip" data-c="esmeralda">Bases de datos</span>
+      </div>
+      <p class="total"><b data-total>101</b><span><strong>prácticas documentadas</strong>Windows Server, Linux, PowerShell, seguridad, Docker y AWS</span></p>
+      <div class="cta">
+        <a class="btn primary" href="#practicas">Ver prácticas</a>
+        <a class="btn ghost" href="#contacto">Contactar</a>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="cube-wrap" aria-hidden="true"><div class="cube">
+        <div class="face"><b>29</b>Windows</div>
+        <div class="face"><b>23</b>Linux</div>
+        <div class="face"><b>10</b>AWS</div>
+        <div class="face"><b>17</b>Docker</div>
+        <div class="face"><b>13</b>Seguridad</div>
+        <div class="face"><b>9</b>PowerShell</div>
+      </div></div>
+    <div class="term" aria-label="Terminal interactiva">
+      <div class="term-bar"><i></i><i></i><i></i><span>ssh cristina@portfolio</span></div>
+      <div class="term-out" id="out" aria-live="polite"></div>
+      <form class="term-in" id="termForm" autocomplete="off">
+        <label for="cmd">$</label>
+        <input id="cmd" type="text" spellcheck="false" placeholder="escribe 'help'" aria-label="Comando">
+      </form>
+    </div>
+    </div>
+  </header>
+
+  <section id="sobre-mi" data-c="violeta">
+    <div class="sec-head"><span class="port">PORT 01</span><h2>Sobre mí</h2></div>
+    <div class="about">
+      <div class="text">
+        <p>Empecé en el mundo de la informática montando y reparando equipos en el ciclo de Grado Medio SMR. Ahí descubrí que lo que más me interesaba no era solo el hardware, sino cómo se conectan las máquinas entre sí y cómo se administran a escala.</p>
+        <p>Por eso continué con el Grado Superior ASIR, donde trabajo con servidores Linux y Windows, servicios de red, bases de datos, virtualización y seguridad. Este año termino el ciclo con el proyecto final y la formación en empresa.</p>
+        <p>Busco mi primera oportunidad como técnica de sistemas, soporte o redes en un equipo donde pueda seguir aprendiendo y aportar desde el primer día.</p>
+      </div>
+      <dl class="spec">
+        <div><dt>Nombre</dt><dd>Cristina Qian Huang</dd></div>
+        <div><dt>Edad</dt><dd>19 años</dd></div>
+        <div><dt>Formación</dt><dd>SMR ✓ · ASIR (en curso)</dd></div>
+        <div><dt>Experiencia formativa</dt><dd>4 años</dd></div>
+        <div><dt>Prácticas documentadas</dt><dd><span data-total>101</span></dd></div>
+        <div><dt>Perfil</dt><dd>Sistemas · Redes · Seguridad</dd></div>
+        <div><dt>Disponibilidad</dt><dd style="color:var(--ok)">● Prácticas / empleo</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="formacion" data-c="indigo">
+    <div class="sec-head"><span class="port">PORT 02</span><h2>Formación</h2><p>Cuatro cursos seguidos en la familia profesional de Informática y Comunicaciones.</p></div>
+    <div class="timeline">
+      <article class="year">
+        <div class="yr">2023 – 2024</div>
+        <h3>SMR · 1.º</h3>
+        <div class="deg">Grado Medio</div>
+        <ul><li>Montaje y mantenimiento de equipos</li><li>Sistemas operativos monopuesto</li><li>Redes locales</li><li>Aplicaciones ofimáticas</li></ul>
+      </article>
+      <article class="year">
+        <div class="yr">2024 – 2025</div>
+        <h3>SMR · 2.º</h3>
+        <div class="deg">Título obtenido</div>
+        <ul><li>Sistemas operativos en red</li><li>Seguridad informática</li><li>Servicios en red</li><li>Aplicaciones web</li></ul>
+      </article>
+      <article class="year">
+        <div class="yr">2025 – 2026</div>
+        <h3>ASIR · 1.º</h3>
+        <div class="deg">Grado Superior</div>
+        <ul><li>Implantación de sistemas operativos</li><li>Planificación y administración de redes</li><li>Gestión de bases de datos</li><li>Lenguajes de marcas</li><li><a href="#practicas">55 prácticas</a>: 29 de Windows Server, 17 de Linux y 9 de PowerShell</li></ul>
+      </article>
+      <article class="year now">
+        <div class="yr">2026 – 2027</div>
+        <h3>ASIR · 2.º <span class="badge-now">ahora</span></h3>
+        <div class="deg">Último curso</div>
+        <ul><li>Administración de sistemas operativos</li><li>Servicios de red e Internet</li><li>Seguridad y alta disponibilidad</li><li>Administración de SGBD</li><li>Proyecto final + formación en empresa</li><li><a href="#practicas">46 prácticas hasta ahora</a></li></ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="habilidades" data-c="fucsia">
+    <div class="sec-head"><span class="port">PORT 03</span><h2>Habilidades técnicas</h2><p>Elige un área para ver las tecnologías que manejo. Nivel autoevaluado de 1 a 5 según lo practicado en clase y en proyectos propios.</p></div>
+    <div class="skills" id="skills"></div>
+  </section>
+
+  <section id="practicas" data-c="violeta">
+    <div class="sec-head"><span class="port">PORT 04</span><h2>Prácticas</h2><p>Todas las prácticas que he hecho en ASIR, documentadas paso a paso. Elige un grupo para verlas.</p></div>
+    <div id="prGroups" class="skills"></div>
+  </section>
+
+  <section id="proyectos" data-c="esmeralda">
+    <div class="sec-head"><span class="port">PORT 05</span><h2>Otros proyectos</h2><p>Trabajos de SMR y ASIR con Linux, redes y automatización.</p></div>
+    <div class="filters" role="group" aria-label="Filtrar proyectos" id="filters"></div>
+    <div class="projects" id="projects"></div>
+  </section>
+
+  <section id="contacto" class="contact" data-c="violeta">
+    <div>
+      <h2>¿Hablamos?</h2>
+      <p>Estoy buscando empresa para la formación práctica y mi primer empleo en sistemas, redes o soporte. Escríbeme y te respondo pronto.</p>
+    </div>
+    <div class="links">
+      <div><span class="k">email</span><span class="v">cristinaqianhuang@gmail.com</span><button type="button" data-copy="tu.correo@ejemplo.com">copiar</button></div>
+      <div><span class="k">linkedin</span><span class="v">https://www.linkedin.com/in/cristina-qian-huang-966827343/</span><button type="button" data-copy="linkedin.com/in/tu-perfil">copiar</button></div>
+      <div><span class="k">github</span><span class="v">https://github.com/cristinaaqh</span><button type="button" data-copy="github.com/tu-usuario">copiar</button></div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Cristina Qian Huang</span><span>status: 200 OK · uptime 4 años</span></footer>
+</div>
+
+<script>
+const IC={
+ term:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10l3 2-3 2M12 15h5"/>',
+ server:'<rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5"/>',
+ tree:'<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/>',
+ bash:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M8 9.5c-1-1-3-.5-3 .8s3 .8 3 2.2-2 1.8-3 .8M6.5 8v8M11 15h6"/>',
+ shell:'<path d="M4 6l8 6-8 6M13 18h7"/>',
+ layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 4.5 9-4.5" opacity=".55"/>',
+ cloud:'<path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8a4.5 4.5 0 0 1-.5 10z"/><path d="M10 14h4"/>',
+ nodes:'<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2v4.3M12 11.5L6.5 17M12 11.5l5.5 5.5M7.2 19h9.6"/>',
+ switch:'<rect x="2.5" y="8" width="19" height="8" rx="2"/><path d="M6 12h.01M9 12h.01M12 12h.01M15 12h.01M18 12h.01M7 8V5M17 8V5M12 16v3"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/>',
+ web:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6 6.5h.01M8.5 6.5h.01"/><rect x="9.5" y="13" width="5" height="4" rx="1"/><path d="M10.5 13v-1.2a1.5 1.5 0 0 1 3 0V13"/>',
+ swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+ lock:'<rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14.5v2.5"/>',
+ disks:'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M17 7.5h.01M17 16.5h.01M6 7.5h6M6 16.5h6"/>',
+ db:'<ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8v-13M4.5 12c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8"/>',
+ boxes:'<rect x="3" y="12" width="6" height="6" rx="1"/><rect x="9" y="12" width="6" height="6" rx="1"/><rect x="15" y="12" width="6" height="6" rx="1"/><rect x="6" y="6" width="6" height="6" rx="1"/><rect x="12" y="6" width="6" height="6" rx="1"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/>',
+ code:'<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>'
+};
+const skills = [
+  {g:"Sistemas", c:"violeta", desc:"Instalo, configuro y administro servidores Windows y Linux, físicos, virtuales y en la nube.", items:[
+    ["Linux","Ubuntu Server y Debian",4,"term"],["Windows Server 2025","Con escritorio y Server Core",4,"server"],["Directorio","Active Directory · Samba AD · GPO",4,"tree"],
+    ["Bash","Servicios y scripts en Linux",4,"bash"],["PowerShell","Administración sin interfaz gráfica",4,"shell"],["Virtualización","VirtualBox · Proxmox",4,"layers"],["AWS EC2","Servidores en la nube",3,"cloud"]]},
+  {g:"Redes", c:"azul", desc:"Diseño y pongo en marcha redes con sus servicios: direccionamiento, VLAN, nombres, web y acceso remoto.", items:[
+    ["TCP/IP","Direccionamiento y subnetting",4,"nodes"],["VLAN","Cisco Packet Tracer · segmentación",4,"switch"],["DNS y DHCP","Zonas, ámbitos y failover",4,"globe"],
+    ["Servidores web","IIS · Apache · NGINX · HTTPS",4,"web"],["Enrutamiento y acceso","NAT · RDP · SSH",4,"swap"]]},
+  {g:"Seguridad y datos", c:"rosa", desc:"Protejo la información con cifrado, redundancia y copias, y despliego servicios en contenedores.", items:[
+    ["Cifrado","Certificados · BitLocker",3,"lock"],["Almacenamiento y copias","RAID · Clonezilla · Duplicity",4,"disks"],["Bases de datos","SQL · MySQL / MariaDB · PostgreSQL",4,"db"],
+    ["Contenedores","Docker · Docker Compose",4,"boxes"],["Correo","Postfix · Mailcow",3,"mail"],["Marcado","HTML · CSS · XML",4,"code"]]},
+];
+const lvl = ["","básico","inicial","intermedio","sólido","avanzado"];
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const wrapDrawer=html=>`<div class="drawer"><div class="drawer-in">${html}</div></div>`;
+function closeDrawer(host,then){const d=host.querySelector(":scope > .drawer");if(!d||RM){then();return;}d.classList.add("closing");setTimeout(then,300);}
+let skTab=-1;
+function renderSkills(){
+  const g=skills[skTab];
+  document.getElementById("skills").innerHTML=`
+   <div class="sk-tabs">${skills.map((x,i)=>`<button type="button" id="sk-tab-${i}" aria-expanded="${i===skTab}" aria-controls="sk-panel" data-c="${x.c}" data-i="${i}"><span class="sk-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[x.items[0][3]]}</svg></span><span class="pb-txt"><b>${x.g}</b><small>${x.items.length} áreas</small></span><span class="chev" aria-hidden="true"></span></button>`).join("")}</div>
+   ${g?wrapDrawer(`<div class="sk-panel" id="sk-panel" data-c="${g.c}">
+     <p class="sk-desc">${g.desc}</p>
+     <div class="sk-grid">${g.items.map(([n,sub,v,ic],k)=>`
+      <article class="sk-card" style="--d:${k*60}ms">
+        <div class="sk-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[ic]}</svg></div>
+        <h3>${n}</h3><p>${sub}</p>
+        <div class="sk-lvl"><span class="meter" role="img" aria-label="${v} de 5">${[1,2,3,4,5].map(i=>`<i class="${i<=v?'on':''}"></i>`).join("")}</span><span class="lvl">${lvl[v]}</span></div>
+      </article>`).join("")}</div>
+   </div>`):""}`;
+}
+document.getElementById("skills").addEventListener("click",e=>{const b=e.target.closest(".sk-tabs button");if(!b)return;const i=+b.dataset.i,host=document.getElementById("skills");
+  const done=()=>{renderSkills();document.getElementById("sk-tab-"+i).focus();};
+  if(i===skTab){closeDrawer(host,()=>{skTab=-1;done();});}else{skTab=i;done();}});
+renderSkills();
+
+const projects = [
+  {cat:"Redes",title:"Red segmentada con VLAN",when:"ASIR · 1.º",desc:"Topología en Packet Tracer con tres departamentos, routing inter-VLAN, servidor DHCP centralizado y listas de control de acceso.",code:"Switch(config)# vlan 20\nSwitch(config-vlan)# name CONTABILIDAD\nRouter(config)# ip dhcp pool VLAN20",tags:["Cisco","VLAN","ACL"]},
+  {cat:"Servicios",title:"Servidor web LAMP con HTTPS",when:"ASIR · 2.º",desc:"Despliegue de Apache, MariaDB y PHP en Debian con virtual hosts, certificado TLS y redirección de HTTP a HTTPS.",code:"sudo a2enmod ssl\nsudo a2ensite portfolio.conf\nsudo systemctl reload apache2",tags:["Debian","Apache","TLS"]},
+  {cat:"Seguridad",title:"Copias de seguridad automatizadas",when:"ASIR · 2.º",desc:"Script en Bash que comprime directorios y bases de datos, rota las copias antiguas y se ejecuta cada noche con cron.",code:"0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1",tags:["Bash","cron","mysqldump"]},
+  {cat:"Sistemas",title:"Laboratorio virtual en Proxmox",when:"Proyecto propio",desc:"Entorno doméstico con varias máquinas virtuales y contenedores para practicar servicios, monitorización y recuperación ante fallos.",code:"qm create 101 --name srv-web --memory 2048 --net0 virtio,bridge=vmbr0",tags:["Proxmox","KVM","LXC"]},
+  {cat:"Redes",title:"Montaje y cableado de una red local",when:"SMR",desc:"Crimpado de cables de par trenzado según la norma T568B, montaje de rack con patch panel y verificación con certificador.",code:"T568B: bl-na · na · bl-ve · az · bl-az · ve · bl-ma · ma",tags:["Cableado","Rack","Hardware"]},
+];
+const cats = ["Todos",...new Set(projects.map(p=>p.cat))];
+let current = "Todos";
+const esc = s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function renderProjects(){
+  document.getElementById("filters").innerHTML = cats.map(c=>`<button type="button" aria-pressed="${c===current}" data-cat="${c}">${c}</button>`).join("");
+  document.getElementById("projects").innerHTML = projects.filter(p=>current==="Todos"||p.cat===current).map(p=>`
+    <article class="proj"><div class="meta"><span>${p.cat}</span><span>${p.when}</span></div>
+    <h3>${p.title}</h3><p>${p.desc}</p>
+    <div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div></article>`).join("");
+}
+document.getElementById("filters").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;current=b.dataset.cat;renderProjects();});
+renderProjects();
+
+const Y="https://www.youtube.com/";
+const labData=[
+ {c:"WS.01",ph:"Base",t:"Instalación de Windows 11",d:"Máquina virtual en VirtualBox con disco de 80 GB y edición Pro, que hace de cliente en el resto de prácticas.",tg:["VirtualBox","Windows 11"],v:"watch?v=gj4KcnhaO6k"},
+ {c:"WS.02",ph:"Base",t:"Instalación de Windows Server 2025",d:"Servidor en VirtualBox con disco de 50 GB, nombre de equipo y edición con experiencia de escritorio.",tg:["Windows Server 2025"],v:"watch?v=5wJ_x5qudto"},
+ {c:"WS.2.1",ph:"Base",t:"Guest Additions",d:"Instalación de las Guest Additions para portapapeles compartido, resolución dinámica y carpetas compartidas con el anfitrión.",tg:["VirtualBox"],v:"watch?v=67MdNP5wCHo"},
+ {c:"WS.03",ph:"Red",t:"Redes LAN y WAN",d:"Servidor con dos adaptadores: NAT hacia Internet y red interna 192.168.10.0/24 con IP fija. Regla de firewall ICMPv4 para comprobar con ping.",tg:["TCP/IP","Firewall"],v:"watch?v=l1nmL4JpzV8"},
+ {c:"WS.04",ph:"Directorio",t:"Dominio AD DS",d:"Promoción del servidor a controlador de dominio con DNS integrado y unión del cliente Windows 11 al dominio.",tg:["AD DS","DNS"],v:"watch?v=2vI-GCG0GU4"},
+ {c:"WS.05",ph:"Directorio",t:"Administración de Active Directory",d:"Unidades organizativas, usuarios con distintos privilegios (administrador y estándar) y grupos para delegar permisos.",tg:["OU","Usuarios","Grupos"],v:"watch?v=RXf8rirsW3o"},
+ {c:"WS.06",ph:"Directorio",t:"Recursos compartidos",d:"Carpetas por departamento con permisos de recurso y NTFS por grupo, e impresora de oficina compartida solo para un grupo.",tg:["SMB","NTFS","Impresión"],v:"watch?v=1PIcVcqFMb8"},
+ {c:"WS.07",ph:"Red",t:"SNAT",d:"Windows Server como enrutador con NAT para que los equipos de la red privada salgan a Internet a través de él.",tg:["NAT","Enrutamiento"],v:"watch?v=Ps9sylvGBag"},
+ {c:"WS.08",ph:"Red",t:"Servidor DNS",d:"Zona directa e inversa, registros A y PTR, reenviadores y firma de la zona con DNSSEC.",tg:["DNS","DNSSEC"],v:"watch?v=1gAoe9moTvU"},
+ {c:"WS.09",ph:"Red",t:"Servidor DHCP",d:"Rol DHCP con ámbito, puerta de enlace y DNS para la red interna. Comprobación de la concesión desde el cliente con ipconfig.",tg:["DHCP"],v:"watch?v=vhpBw1EvOLQ"},
+ {c:"WS.10",ph:"Almacenamiento",t:"RAID",d:"Seis discos virtuales convertidos a dinámicos para montar y comparar RAID 0, 1, 5, 6 y 10.",tg:["RAID","Discos dinámicos"],v:"watch?v=emegJxRe9fs"},
+ {c:"WS.11",ph:"Almacenamiento",t:"Copias de seguridad",d:"Copia completa programada sobre un volumen RAID 5 y restauración de usuarios de AD borrados arrancando en modo DSRM.",tg:["Windows Server Backup","DSRM"],v:"watch?v=G9eD-2HD0JA"},
+ {c:"WS.12",ph:"Servicios",t:"RDP multisesión",d:"Escritorio remoto multiusuario en el servidor mediante directivas de grupo y acceso remoto habilitado en Windows 11.",tg:["RDP","Directivas"],v:"watch?v=c3vbPFgo6XE"},
+ {c:"WS.13",ph:"Servicios",t:"FTPS",d:"Rol FTP de IIS con certificado autofirmado para cifrar la conexión, probado desde el cliente FileZilla.",tg:["IIS","FTP","TLS"],v:"watch?v=lVD6NyvXQtA"},
+ {c:"WS.14",ph:"Servicios",t:"HTTPS con DuckDNS",d:"Web en IIS publicada con un dominio DuckDNS, certificado emitido por una CA propia (AD CS) y redirección de HTTP a HTTPS.",tg:["IIS","AD CS","DuckDNS"],v:"watch?v=O7TIK-ZSyHc"},
+ {c:"WS.15",ph:"Servicios",t:"Servidor SMTP",d:"Servidor de correo con SMTP, POP3 e IMAP cifrados con certificados generados con OpenSSL y revisión de los registros.",tg:["SMTP","IMAP","OpenSSL"],v:"watch?v=MAoNCQOcQAs"},
+ {c:"WS.16",ph:"Servicios",t:"MySQL con WinGet",d:"Instalación de MySQL Server, MySQL Shell y VS Code desde la línea de comandos con el gestor de paquetes WinGet.",tg:["MySQL","WinGet"],v:"watch?v=jNvq4s5VZos"},
+ {c:"WS.17",ph:"Directorio",t:"GPO: despliegue de software",d:"Distribución de paquetes MSI desde una carpeta compartida mediante directivas de grupo vinculadas a unidades organizativas.",tg:["GPO","MSI"],v:"watch?v=urY9hFeRbqU"},
+ {c:"WS.18",ph:"Alta disponibilidad",t:"Controlador de dominio adicional",d:"Segundo controlador de dominio y comprobación de la replicación de usuarios y cambios entre ambos.",tg:["ADC","Replicación"],v:"watch?v=q9WwKH0NkY0"},
+ {c:"WS.19",ph:"Alta disponibilidad",t:"DHCP failover",d:"Conmutación por error del DHCP entre dos servidores en los modos de equilibrio de carga y espera activa.",tg:["DHCP","Failover"],v:"watch?v=Aid1YWvmUEY"},
+ {c:"WS.20",ph:"Alta disponibilidad",t:"RRAS failover",d:"Enrutamiento y acceso remoto con un segundo servidor de respaldo para que la red siga saliendo si cae el enrutador principal.",tg:["RRAS","Failover"]},
+ {c:"WS.21",ph:"Alta disponibilidad",t:"NLB",d:"Equilibrio de carga de red entre varios servidores para repartir las peticiones y mantener el servicio si uno falla.",tg:["NLB","Clúster"]},
+ {c:"WS.22",ph:"Directorio",t:"GPO de inicio y cierre de sesión",d:"Directivas de grupo que ejecutan acciones al iniciar y cerrar sesión los usuarios del dominio.",tg:["GPO","Scripts"]},
+ {c:"WS.23",ph:"Directorio",t:"GPO de BitLocker",d:"Cifrado de unidades con BitLocker gestionado mediante directivas de grupo.",tg:["GPO","BitLocker","Cifrado"]},
+ {c:"WS.24",ph:"Directorio",t:"GPO y DHCP",d:"Directivas de grupo aplicadas a la configuración DHCP de los equipos del dominio.",tg:["GPO","DHCP"]},
+ {c:"WS.25",ph:"Base",t:"Ubuntu Desktop y Guest Additions",d:"Instalación de un cliente Ubuntu Desktop en VirtualBox con sus Guest Additions.",tg:["Ubuntu","VirtualBox"]},
+ {c:"WS.26",ph:"Red",t:"DHCP multiámbito",d:"Servidor DHCP con varios ámbitos para dar direcciones a más de una subred.",tg:["DHCP","Subredes"]},
+ {c:"WS.27",ph:"Directorio",t:"Ubuntu Desktop en el dominio",d:"Unión de un equipo Linux al dominio de Active Directory para iniciar sesión con usuarios del dominio.",tg:["Ubuntu","AD DS"]},
+ {c:"WS.28",ph:"Red",t:"SSH y VLAN",d:"Acceso remoto seguro por SSH y segmentación de la red con VLAN.",tg:["SSH","VLAN"]},
+];
+const linuxData=[
+ {c:"LP.01",t:"Instalación de Ubuntu Server 24.04.2",d:"Servidor Linux sin entorno gráfico en VirtualBox, administrado desde la línea de comandos.",tg:["Ubuntu Server","VirtualBox"]},
+ {c:"LP.02",t:"Redes LAN y WAN",d:"Configuración de las interfaces de red del servidor para separar la salida a Internet de la red interna.",tg:["Netplan","TCP/IP"]},
+ {c:"LP.03",t:"SSH",d:"Servidor OpenSSH para administrar la máquina en remoto de forma cifrada.",tg:["OpenSSH"]},
+ {c:"LP.04",t:"SNAT",d:"Ubuntu Server como enrutador con NAT para dar salida a Internet a la red privada.",tg:["NAT","Enrutamiento"]},
+ {c:"LP.05",t:"Servidor DHCP",d:"Asignación automática de direcciones a los clientes de la red interna desde Linux.",tg:["DHCP"]},
+ {c:"LP.06",t:"Servidor DNS",d:"Resolución de nombres para la red interna con zonas propias en Linux.",tg:["DNS"]},
+ {c:"LP.07",t:"RAID",d:"Volúmenes RAID por software en Linux sobre varios discos virtuales.",tg:["RAID"]},
+ {c:"LP.08",t:"Proxy Squid",d:"Servidor proxy con caché, listas de control de acceso para bloquear webs y autenticación de usuarios.",tg:["Squid","ACL"],v:"https://www.youtube.com/watch?v=WD7sCbAfmZo"},
+ {c:"LP.09",t:"Servidor web Apache",d:"Instalación de Apache y publicación de un sitio propio con su virtual host, desactivando el sitio por defecto.",tg:["Apache","VirtualHost"],v:"https://youtu.be/_aLt3w2TMDY"},
+ {c:"LP.10",t:"HTTPS en Apache",d:"Certificado autofirmado RSA 2048 generado con OpenSSL, virtual host en el puerto 443 y redirección de HTTP a HTTPS.",tg:["TLS","OpenSSL"],v:"https://www.youtube.com/watch?v=_adQwmQK75w"},
+ {c:"LP.11",t:"Pila LAMP",d:"Apache, MySQL y PHP en Ubuntu Server, con el servidor MySQL abierto a conexiones remotas.",tg:["LAMP","MySQL","PHP"],v:"https://youtu.be/nhubWGxhl5w"},
+ {c:"LP.12",t:"FTP con VSFTPD",d:"Servidor FTP con usuarios propios para las transferencias y reglas del firewall de Ubuntu para sus puertos.",tg:["VSFTPD","UFW"],v:"https://www.youtube.com/watch?v=okeWIOZBroA"},
+ {c:"LP.13",t:"Samba y copias de seguridad",d:"Carpetas compartidas con Samba y copias automáticas programadas con Déjà Dup sobre ellas.",tg:["Samba","Déjà Dup"],v:"https://youtu.be/2Yxu1GeC0XE"},
+ {c:"LP.14",t:"OpenLDAP",d:"Directorio LDAP con unidades organizativas, grupos y usuarios, y cliente Ubuntu Desktop que inicia sesión con ellos.",tg:["OpenLDAP"],v:"https://youtu.be/Rl032gHFu88"},
+ {c:"LP.15",t:"LDAP Account Manager",d:"Panel web LAM conectado al servidor LDAP para gestionar unidades, grupos y usuarios desde el navegador.",tg:["LAM","LDAP"],v:"https://www.youtube.com/watch?v=mL7g35tTZY8"},
+ {c:"LP.16",t:"Apache Guacamole",d:"Pasarela de acceso remoto vía web como bastión: RDP a Windows 11 y SSH a Ubuntu Desktop desde el navegador.",tg:["Guacamole","RDP","SSH"],v:"https://youtu.be/u0OGUwTBTkc"},
+ {c:"LP.17",t:"Pi-hole",d:"Pi-hole v6 como DNS principal de la red para filtrar publicidad y dominios no deseados.",tg:["Pi-hole","DNS"],v:"https://youtu.be/zABpdkKG8g0"},
+];
+const psData=[
+ {c:"PS.01",t:"Server Core y Windows 11",d:"Instalación de Windows Server 2025 sin entorno gráfico y de un cliente Windows 11 con sus Guest Additions.",tg:["Server Core","VirtualBox"],v:"https://youtu.be/gj4KcnhaO6k"},
+ {c:"PS.02",t:"Dominio desde PowerShell",d:"Red y nombre del equipo, instalación del rol AD DS y creación de un bosque nuevo sin usar la interfaz gráfica.",tg:["AD DS","PowerShell"],v:"https://youtu.be/RMtYFFx6WMM"},
+ {c:"PS.03",t:"OpenSSH en Server Core",d:"Servicio OpenSSH en Windows para administrar el servidor en remoto desde distintos segmentos de red.",tg:["OpenSSH"],v:"https://youtu.be/py0Ch92jA_I"},
+ {c:"PS.04",t:"Administración del dominio",d:"Unidades organizativas, usuarios, grupos de seguridad y carpetas por departamento con sus permisos, todo automatizado con PowerShell.",tg:["AD","NTFS","Scripts"],v:"https://youtu.be/y32HVBAAaEk"},
+ {c:"PS.05",t:"SNAT con RRAS",d:"Servidor con dos interfaces configurado como router con NAT mediante el servicio de enrutamiento y acceso remoto.",tg:["RRAS","NAT"],v:"https://youtu.be/L9EJWz-G3iU"},
+ {c:"PS.06",t:"Storage Pool",d:"Grupo de almacenamiento con discos en bruto y espacios con distintos niveles de redundancia, equivalentes a RAID.",tg:["Storage Spaces"],v:"https://youtu.be/grkP8OO7RTQ"},
+ {c:"PS.07",t:"Copias de seguridad",d:"Almacenamiento en un cliente Windows 11, unidad de red creada con PowerShell y copias periódicas con tarea programada.",tg:["Backup","Tareas programadas"],v:"https://youtu.be/grkP8OO7RTQ"},
+ {c:"PS.08",t:"Servidor DHCP",d:"Rol DHCP con ámbito, puerta de enlace y DNS, y una reserva de IP para un equipo concreto.",tg:["DHCP"],v:"https://youtu.be/iM_un65828I"},
+ {c:"PS.09",t:"Servidor DNS",d:"Zona de búsqueda directa con sus registros y restricción de la resolución de ciertos dominios.",tg:["DNS"],v:"https://youtu.be/63KxNws64Ao"},
+];
+
+const c2Data=[
+ {c:"LP.01",g:"Servicios de red",t:"DDNS y DHCP",d:"Servidor DHCP en Ubuntu Server que actualiza el DNS automáticamente al repartir direcciones (DNS dinámico).",tg:["ISC DHCP","Bind9","DDNS"],v:"https://www.youtube.com/watch?v=94lz9lVC36g"},
+ {c:"LP.02",g:"Servicios de red",t:"SNAT con nftables",d:"Servidor como puerta de enlace con reglas de nftables para la traducción de direcciones y monitorización del tráfico.",tg:["nftables","NAT"],v:"https://www.youtube.com/watch?v=x2RfIATv-YQ"},
+ {c:"LP.03",g:"Servicios de red",t:"Servidor de correo",d:"Postfix con webmail Roundcube y clientes Thunderbird por IMAP y POP3.",tg:["Postfix","Roundcube","IMAP"],v:"https://youtu.be/KqHiLGgaoIQ"},
+ {c:"LP.04",g:"Servicios de red",t:"Mensajería instantánea",d:"Servidor XMPP con ejabberd, usuarios y salas de chat, y clientes Pidgin en los equipos.",tg:["ejabberd","XMPP"],v:"https://youtu.be/7UQ7iOomMfE"},
+ {c:"LP.05",g:"Servicios de red",t:"Streaming de audio",d:"Emisora de audio por Internet con Icecast2 en Ubuntu Server.",tg:["Icecast2"],v:"https://youtu.be/506A3WbHJWo"},
+ {c:"LP.06",g:"Servicios de red",t:"Streaming de vídeo",d:"Servidor de vídeo en directo propio con NGINX y el módulo RTMP.",tg:["NGINX","RTMP"],v:"https://youtu.be/Q26IHnAKKjY"},
+ {c:"SAD.01",g:"Seguridad y alta disponibilidad",t:"Samba AD DC con Windows",d:"Ubuntu Server como controlador de dominio con Samba, usuarios y grupos, y un cliente Windows iniciando sesión en él.",tg:["Samba AD","Kerberos"],v:"https://www.youtube.com/watch?v=61ChELri2_k"},
+ {c:"SAD.02",g:"Seguridad y alta disponibilidad",t:"Ubuntu Desktop en Samba AD",d:"Cliente Linux unido al dominio con Winbind y PAM, con creación automática de los directorios personales.",tg:["Winbind","PAM"],v:"https://www.youtube.com/watch?v=fV2WUt0LEWA"},
+ {c:"SAD.03",g:"Seguridad y alta disponibilidad",t:"RSAT",d:"Herramientas de administración remota en Windows 11 para gestionar el dominio Samba y sus GPO con la consola GPMC.",tg:["RSAT","GPO"],v:"https://www.youtube.com/watch?v=Pr4JNdFWwwg"},
+ {c:"SAD.04",g:"Seguridad y alta disponibilidad",t:"DHCP para dos VLAN",d:"Un servidor DHCP para dos VLAN, con rutas, reglas de NAT, zonas DNS directa e inversa y sincronización horaria con Chrony.",tg:["VLAN","DHCP","Chrony"],v:"https://www.youtube.com/watch?v=ar4iG_rb3P0"},
+ {c:"SAD.05",g:"Seguridad y alta disponibilidad",t:"Administración de usuarios",d:"Autenticación de los usuarios del dominio en Linux con PAM y NSS, filtrado de tráfico entre VLAN y SNAT hacia el exterior.",tg:["PAM","NSS","nftables"],v:"https://www.youtube.com/watch?v=QDOiyRQ2dnY"},
+ {c:"SAD.06",g:"Seguridad y alta disponibilidad",t:"NAS con Samba",d:"Recurso compartido central en /nas, accesible desde Windows y desde Linux con cifs-utils, y GPO asociadas.",tg:["Samba","CIFS"],v:"https://www.youtube.com/watch?v=1TkYgNmgL6c"},
+ {c:"SAD.07",g:"Seguridad y alta disponibilidad",t:"Dominios web",d:"Varios sitios en Apache con hosts virtuales y sus registros DNS directos e inversos creados con RSAT.",tg:["Apache","DNS"],v:"https://www.youtube.com/watch?v=MtuED4ZlnDI"},
+ {c:"SAD.08",g:"Seguridad y alta disponibilidad",t:"Debian con RAID 1",d:"Instalación de Debian sobre RAID 1 por software con swap, y GRUB en los dos discos para que arranque si falla uno.",tg:["Debian","mdadm","GRUB"],v:"https://www.youtube.com/watch?v=FWGsc1NSWGw"},
+ {c:"SAD.09",g:"Seguridad y alta disponibilidad",t:"Proxy inverso",d:"NGINX como proxy inverso delante de un servidor web interno, con NAT en nftables.",tg:["NGINX","nftables"],v:"https://www.youtube.com/watch?v=txCk3zMfld8"},
+ {c:"SAD.10",g:"Seguridad y alta disponibilidad",t:"NGINX con HTTPS",d:"Sitio web en NGINX con certificado propio, redirección de HTTP a HTTPS y nombre en el DNS local.",tg:["NGINX","TLS"],v:"https://www.youtube.com/watch?v=R9pbflDbiEU"},
+ {c:"SAD.11",g:"Seguridad y alta disponibilidad",t:"Clonezilla",d:"Imagen completa de un disco y restauración posterior para comprobar que el sistema vuelve a su estado anterior.",tg:["Clonezilla","Imágenes"],v:"https://www.youtube.com/watch?v=F_HK4ZTXtMw"},
+ {c:"SAD.12",g:"Seguridad y alta disponibilidad",t:"Zextras Carbonio",d:"Plataforma de correo y colaboración Carbonio con DNSmasq para la resolución de nombres y clientes de correo y chat.",tg:["Carbonio","DNSmasq"],v:"https://www.youtube.com/watch?v=5sHrdte29vU"},
+ {c:"SAD.13",g:"Seguridad y alta disponibilidad",t:"Copias con Duplicity",d:"Copias de seguridad cifradas con GnuPG a otro servidor por SSH con clave, automatizadas con un script.",tg:["Duplicity","GnuPG","SSH"],v:"https://www.youtube.com/watch?v=KbIZso1hfuc"},
+ {c:"DMZ",g:"Contenedores Docker",t:"DNAT y DMZ",d:"Red con zona desmilitarizada en Linux: reglas de DNAT con nftables para publicar el puerto 80 de un servidor interno hacia la WAN, junto con SNAT.",tg:["nftables", "DNAT", "DMZ"],pdf:1},
+ {c:"DKR.01",g:"Contenedores Docker",t:"Instalaci\u00f3n de Docker",d:"Docker Engine desde el repositorio oficial en un servidor de la DMZ, red con Netplan y usuario con permisos para usarlo.",tg:["Docker", "Netplan"],v:"https://www.youtube.com/watch?v=d7CHK7qrI8A"},
+ {c:"DKR.02",g:"Contenedores Docker",t:"Docker Compose",d:"Servicios definidos en un archivo docker-compose.yml y levantados con un solo comando.",tg:["Compose", "YAML"],v:"https://www.youtube.com/watch?v=3hdUtH6gwKw"},
+ {c:"DKR.03",g:"Contenedores Docker",t:"Apache en contenedor",d:"Servidor web Apache en un contenedor con el puerto 80 publicado en el host.",tg:["Apache", "docker run"],v:"https://www.youtube.com/watch?v=FagVU9v0ers"},
+ {c:"DKR.04",g:"Contenedores Docker",t:"WordPress",d:"WordPress y su base de datos con Compose, variables de entorno, política de reinicio y credenciales propias.",tg:["WordPress", "MySQL"],v:"https://www.youtube.com/watch?v=Sg1JbHgMvPg"},
+ {c:"DKR.05",g:"Contenedores Docker",t:"NGINX como proxy inverso",d:"Infraestructura con imágenes construidas con docker-compose build y un NGINX que reparte el tráfico a los servicios.",tg:["NGINX", "Compose"],v:"https://www.youtube.com/watch?v=X65ICSDm5GI"},
+ {c:"DKR.06",g:"Contenedores Docker",t:"LAMP en contenedores",d:"Apache, PHP y base de datos como servicios separados e interconectados con Compose.",tg:["LAMP", "Compose"],v:"https://www.youtube.com/watch?v=Ilbil_WbWM4"},
+ {c:"DKR.07",g:"Contenedores Docker",t:"FTPS en contenedor",d:"Servidor FTP con cifrado SSL/TLS desplegado con Compose.",tg:["FTPS", "TLS"],v:"https://www.youtube.com/watch?v=QTKQj1ymoo0"},
+ {c:"DKR.08",g:"Contenedores Docker",t:"PostgreSQL y pgAdmin",d:"Base de datos PostgreSQL gestionada desde pgAdmin, tanto en el navegador como desde los equipos cliente.",tg:["PostgreSQL", "pgAdmin"],v:"https://www.youtube.com/watch?v=Fschuy7TPwA"},
+ {c:"DKR.09",g:"Contenedores Docker",t:"Mailcow",d:"Suite de correo completa en contenedores con cifrado, autenticación, filtrado de spam y políticas de seguridad.",tg:["Mailcow", "Correo"],v:"https://www.youtube.com/watch?v=e6Ru4u1aCPE"},
+ {c:"DKR.10",g:"Contenedores Docker",t:"Nextcloud",d:"Nube privada de archivos y colaboración autoalojada, con cuenta de administrador y servidor web propio.",tg:["Nextcloud"],v:"https://www.youtube.com/watch?v=Al5sfIKzEOA"},
+ {c:"DKR.11",g:"Contenedores Docker",t:"OnlyOffice",d:"Suite ofimática en línea integrada con Nextcloud para editar documentos desde el navegador.",tg:["OnlyOffice", "Nextcloud"],v:"https://www.youtube.com/watch?v=l7ihoNBeKVM"},
+ {c:"DKR.12",g:"Contenedores Docker",t:"Teleport",d:"Bastión de acceso en Docker con doble factor y firewall mínimo, y agente en un segundo servidor unido sin abrir su SSH.",tg:["Teleport", "2FA", "Bastión"],v:"https://youtu.be/sDKeus4g5ro"},
+ {c:"DKR.13",g:"Contenedores Docker",t:"Vaultwarden",d:"Gestor de contraseñas autoalojado en un contenedor, con HTTPS propio y token de administración cifrado con Argon2.",tg:["Vaultwarden", "HTTPS"],v:"https://youtu.be/hf7tZ6lLYjs"},
+ {c:"DKR.14",g:"Contenedores Docker",t:"Odoo",d:"ERP Odoo con su base de datos detrás de un proxy inverso con HTTPS y la contraseña maestra cambiada.",tg:["Odoo", "PostgreSQL", "HTTPS"],v:"https://youtu.be/oec8mmQLRJM"},
+ {c:"DKR.15",g:"Contenedores Docker",t:"GLPI",d:"Inventario y gestión de incidencias con GLPI y su base de datos, credenciales aisladas y acceso por HTTPS.",tg:["GLPI", "ITSM"],v:"https://youtu.be/OOo3SlR4BVo"},
+ {c:"DKR.16",g:"Contenedores Docker",t:"MinIO antiransomware",d:"Almacenamiento S3 propio con MinIO por HTTPS y copias con Kopia desde dos sistemas operativos, con credenciales de mínimo privilegio.",tg:["MinIO", "Kopia", "S3"],v:"https://youtu.be/8A0pY-X7okQ"},
+ {c:"AWS.01",g:"Nube AWS",t:"Ubuntu Server en EC2",d:"Instancia Ubuntu Server en Amazon EC2: tipo de instancia, almacenamiento EBS, grupo de seguridad y acceso por SSH con la clave PEM.",tg:["EC2", "SSH"],v:"https://youtu.be/W65FjbCM6Ms"},
+ {c:"AWS.02",g:"Nube AWS",t:"Usuarios SSH",d:"Usuario adicional en la instancia con su propio par de claves para entrar por SSH sin contraseña.",tg:["SSH", "Claves"],v:"https://youtu.be/W65FjbCM6Ms"},
+ {c:"AWS.03",g:"Nube AWS",t:"Apache con HTTPS",d:"Servidor Apache en la nube con certificado de Let's Encrypt obtenido e instalado con Certbot.",tg:["Apache", "Certbot"],v:"https://youtu.be/58u-E5aqkvk"},
+ {c:"AWS.04",g:"Nube AWS",t:"SFTP",d:"Transferencia segura de archivos sobre SSH con autenticación por clave.",tg:["SFTP", "SSH"],v:"https://youtu.be/a_SDz0IkAaY"},
+ {c:"AWS.05",g:"Nube AWS",t:"FTPS con VSFTPD",d:"Servidor FTP cifrado con certificado RSA 2048, usuarios permitidos por lista y enjaulados en su directorio.",tg:["VSFTPD", "TLS", "chroot"],v:"https://youtu.be/sq8_9kd8Omo"},
+ {c:"AWS.06",g:"Nube AWS",t:"MySQL en la nube",d:"Servidor MySQL seguro en la instancia, con un usuario propio y sus permisos, administrado de forma remota.",tg:["MySQL"],v:"https://youtu.be/thwYipdKMCg"},
+ {c:"AWS.07",g:"Nube AWS",t:"Docker en AWS",d:"Docker instalado en la instancia y usuario con permisos para usarlo sin sudo.",tg:["Docker", "EC2"],v:"https://youtu.be/hYuxeCl1dAQ"},
+ {c:"AWS.08",g:"Nube AWS",t:"WordPress con HTTPS",d:"WordPress en contenedores detrás de NGINX, con certificado de Let's Encrypt gestionado con Certbot.",tg:["WordPress", "NGINX", "Certbot"],v:"https://youtu.be/4JA_LN8cF50"},
+ {c:"AWS.09",g:"Nube AWS",t:"Nginx Proxy Manager",d:"Proxy inverso con interfaz web en Docker, que publica varios dominios con certificados SSL y restricciones de acceso.",tg:["NPM", "Let's Encrypt"],v:"https://youtu.be/-3xgGqvwIK8"},
+ {c:"AWS.10",g:"Nube AWS",t:"Moodle",d:"Plataforma de formación Moodle desplegada en contenedores Docker en la nube.",tg:["Moodle", "Docker"],v:"https://youtu.be/JxNzrFr6zgw"},
+].map(x=>({...x,f:"c2/"}));
+IC.play='<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10 9.5v5l4.5-2.5z"/>';
+IC.chat='<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>';
+IC.shield='<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>';
+IC.folder='<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>';
+const RULES=[[/usuarios ssh/i,"term"],[/\bec2\b|\baws\b/i,"cloud"],[/duckdns/i,"lock"],[/dominios web/i,"web"],[/bitlocker|vaultwarden/i,"lock"],[/dominio|active directory|ad ds|\bldap|account manager|directorio|\bgpo|usuarios|rsat|adc|samba ad/i,"tree"],[/stream|audio|v[ií]deo|icecast|rtmp/i,"play"],[/mensajer|xmpp|ejabberd/i,"chat"],[/correo|smtp|mail|postfix|carbonio/i,"mail"],
+ [/proxy|squid|pi-hole|teleport|bast/i,"shield"],[/docker|compose|contened/i,"boxes"],[/dns|ddns/i,"globe"],[/dhcp/i,"nodes"],[/vlan/i,"switch"],
+ [/\bs?nat\b|rras|enrut|\blan\b|\bwan\b|nftables|dmz/i,"swap"],[/raid|backup|copia|clonezilla|storage|duplicity|\bminio\b|\bnas\b|imagen/i,"disks"],[/mysql|postgres|sql|lamp/i,"db"],
+ [/recurso|compart|samba(?! ad)/i,"folder"],[/dominio|active|ldap|lam\b|account|directorio|gpo|usuario|rsat|adc|samba ad/i,"tree"],
+ [/ftp|https|cifr|bitlocker|cert|vault|sftp/i,"lock"],[/apache|nginx|iis|web|wordpress|moodle|odoo|glpi|nextcloud|onlyoffice/i,"web"],
+ [/ssh|rdp|guacamole|remot/i,"term"],[/powershell|core/i,"shell"],[/guest|virtual/i,"layers"],[/instal|windows|ubuntu|debian/i,"server"]];
+const iconFor=x=>{const t=x.t+" "+x.tg.join(" ");for(const [r,i] of RULES)if(r.test(t))return i;return "server";};
+const pcard=(x,k)=>`<article class="sk-card pr-card" style="--d:${k*50}ms">
+  <div class="sk-img"><span class="pr-code">${x.c}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[iconFor(x)]}</svg></div>
+  <h3>${x.t}</h3><p>${x.d}</p><div class="pr-tags">${x.tg.map(t=>`<span>${t}</span>`).join("")}</div></article>`;
+function groupTabs(id,groups){
+  const el=document.getElementById(id); let cur=-1;
+  const draw=()=>{const g=groups[cur];
+    el.innerHTML=`<div class="sk-tabs" style="--n:${groups.length>4?3:groups.length}">${groups.map((x,i)=>`<button type="button" id="${id}-t${i}" aria-expanded="${i===cur}" aria-controls="${id}-p" data-c="${x.c}" data-i="${i}"><span class="sk-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[x.icon]}</svg></span><span class="pb-txt"><b>${x.name}</b><small>${x.items.length} prácticas</small></span><span class="chev" aria-hidden="true"></span></button>`).join("")}</div>
+    ${g?wrapDrawer(`<div class="sk-panel" id="${id}-p" data-c="${g.c}">${g.desc?`<p class="sk-desc">${g.desc}</p>`:""}<div class="sk-grid pr-grid">${g.items.map(pcard).join("")}</div></div>`):""}`;};
+  el.addEventListener("click",e=>{const b=e.target.closest(".sk-tabs button");if(!b||!el.contains(b))return;e.stopPropagation();const i=+b.dataset.i;
+    const done=()=>{draw();document.getElementById(`${id}-t${i}`).focus();};
+    if(i===cur){closeDrawer(el,()=>{cur=-1;done();});}else{cur=i;done();}});
+  draw();
+}
+const pick=(arr,codes)=>arr.filter(x=>codes.includes(x.c));
+const byG=(arr,key,val)=>arr.filter(x=>x[key]===val);
+const ALL=[...labData,...linuxData,...psData];
+const codes=(...c)=>c.flat();
+const take=list=>list.map(c=>ALL.find(x=>x.c===c));
+const PR_GROUPS=[
+  {name:"Instalación y base",c:"violeta",icon:"server",desc:"Máquinas virtuales con Windows 11, Windows Server 2025 (con escritorio y Server Core), Ubuntu Desktop y Ubuntu Server.",
+   items:take(["WS.01","WS.02","WS.2.1","WS.25","PS.01","PS.03","LP.01"])},
+  {name:"Redes",c:"indigo",icon:"nodes",desc:"Direccionamiento, enrutamiento con NAT, VLAN, DNS y DHCP en Windows y en Linux.",
+   items:take(["WS.03","WS.07","WS.08","WS.09","WS.26","WS.28","PS.05","PS.08","PS.09","LP.02","LP.03","LP.04","LP.05","LP.06"])},
+  {name:"Directorio y dominio",c:"azul",icon:"tree",desc:"Active Directory, directivas de grupo, recursos compartidos, LDAP y acceso remoto.",
+   items:take(["WS.04","WS.05","WS.06","WS.17","WS.22","WS.23","WS.24","WS.27","PS.02","PS.04","LP.13","LP.14","LP.15","LP.16","LP.17"])},
+  {name:"Servicios y aplicaciones",c:"fucsia",icon:"web",desc:"Escritorio remoto, web con HTTPS, FTP, correo, bases de datos y proxy.",
+   items:take(["WS.12","WS.13","WS.14","WS.15","WS.16","LP.08","LP.09","LP.10","LP.11","LP.12"])},
+  {name:"Almacenamiento y copias",c:"purpura",icon:"disks",desc:"RAID, grupos de almacenamiento y copias de seguridad.",
+   items:take(["WS.10","WS.11","PS.06","PS.07","LP.07"])},
+  {name:"Servicios de red",c:"rosa",icon:"globe",desc:"Servicios de red e Internet sobre Ubuntu Server: DDNS, nftables, correo, mensajería y streaming.",
+   items:byG(c2Data,"g","Servicios de red")},
+  {name:"Seguridad y alta disponibilidad",c:"esmeralda",icon:"shield",desc:"Dominio Samba, VLAN, NAS, web segura, RAID, copias, y servicios con respaldo: failover, NLB y controlador adicional.",
+   items:[...byG(c2Data,"g","Seguridad y alta disponibilidad"),...take(["WS.18","WS.19","WS.20","WS.21"])]},
+  {name:"Docker",c:"cian",icon:"boxes",desc:"Una DMZ con su servidor Docker y aplicaciones empresariales en contenedores.",items:byG(c2Data,"g","Contenedores Docker")},
+  {name:"Nube AWS",c:"naranja",icon:"cloud",desc:"Servidores reales en Amazon Web Services.",items:byG(c2Data,"g","Nube AWS")}];
+groupTabs("prGroups",PR_GROUPS);
+const total=labData.length+linuxData.length+psData.length+c2Data.length;
+document.querySelectorAll("[data-total]").forEach(e=>e.textContent=total);
+
+
+/* terminal */
+const out = document.getElementById("out"), input = document.getElementById("cmd");
+const cmds = {
+  help:()=>`<span class="k">Comandos disponibles:</span>\n  whoami     quién soy\n  neofetch   ficha del sistema\n  skills     tecnologías principales\n  estudios   mi formación\n  ls lab     todas mis prácticas\n  uptime     tiempo en informática\n  contacto   cómo encontrarme\n  clear      limpiar pantalla`,
+  whoami:()=>`Cristina Qian Huang\nEstudiante de 2.º de ASIR · 19 años\nFutura administradora de sistemas y redes.`,
+  neofetch:()=>`<span class="b">  ┌──────┐</span>   <span class="k">cristina</span>@<span class="k">portfolio</span>\n<span class="b">  │ ▓▓▓▓ │</span>   ─────────────────\n<span class="b">  │ ▓▓▓▓ │</span>   <span class="b">OS:</span> ASIR 2.º (último curso)\n<span class="b">  └──┬───┘</span>   <span class="b">Kernel:</span> SMR 2023-2025\n<span class="b">   ═══╧═══</span>   <span class="b">Shell:</span> bash, powershell\n             <span class="b">Langs:</span> es, zh, en\n             <span class="b">Status:</span> <span class="p">buscando prácticas</span>`,
+  skills:()=>`linux · windows server · active directory\ntcp/ip · vlan · dns · dhcp · apache · nginx\nbash · powershell · sql · docker · proxmox`,
+  estudios:()=>`[2023-2025] Técnico en Sistemas Microinformáticos y Redes ✓\n[2025-2027] Técnico Superior en ASIR <span class="k">(en curso)</span>`,
+  ls:()=>[...c2Data,...labData,...linuxData,...psData].map(x=>`<span class="b">${x.c.padEnd(7)}</span>${x.t}`).join("\n"),
+  uptime:()=>`up 4 years, 0 crashes, load average: aprendiendo, aprendiendo, aprendiendo`,
+  contacto:()=>{document.getElementById("contacto").scrollIntoView();return "Abriendo la sección de contacto…";},
+  sudo:()=>`<span class="k">cristina is not in the sudoers file.</span> Aún. 😉`,
+};
+function print(html){out.insertAdjacentHTML("beforeend",html+"\n");out.scrollTop=out.scrollHeight;}
+function run(raw){
+  const c = raw.trim().toLowerCase(); if(!c) return;
+  print(`<span class="p">$</span> ${esc(raw)}`);
+  if(c==="clear"){out.innerHTML="";return;}
+  const key = c.split(" ")[0];
+  print(cmds[key]?cmds[key]():`<span class="d">${esc(key)}: comando no encontrado. Prueba 'help'.</span>`);
+}
+print(`<span class="d">Último acceso: ${new Date().toLocaleDateString("es-ES")} desde portfolio</span>`);
+run("whoami");
+print(`<span class="d">Escribe 'help' para ver los comandos.</span>`);
+document.getElementById("termForm").addEventListener("submit",e=>{e.preventDefault();run(input.value);input.value="";});
+
+
+document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(b.dataset.copy);b.textContent="copiado";}
+  catch{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="selecciona";}
+  setTimeout(()=>b.textContent="copiar",1600);
+}));
+
+/* nombre 3D: letras animadas */
+document.querySelectorAll(".hero h1 .ln").forEach(ln=>{
+  const t=ln.textContent, n=t.replace(/ /g,"").length; let k=0, idx=ln.classList.contains("grad")?8:0;
+  ln.innerHTML=[...t].map(ch=>ch===" "?'<span class="sp"></span>':`<span class="l" style="--i:${idx++};--x:${(k++/(n-1)).toFixed(3)}">${ch}</span>`).join("");
+});
+(()=>{
+  const h=document.querySelector(".hero"), h1=document.querySelector(".hero h1");
+  if(!h||!matchMedia("(pointer:fine)").matches)return;
+  h.addEventListener("pointermove",e=>{const r=h.getBoundingClientRect();
+    h1.style.setProperty("--hy",(((e.clientX-r.left)/r.width-.5)*18).toFixed(2)+"deg");
+    h1.style.setProperty("--hx",(-((e.clientY-r.top)/r.height-.5)*14).toFixed(2)+"deg");});
+  h.addEventListener("pointerleave",()=>{h1.style.removeProperty("--hx");h1.style.removeProperty("--hy");});
+})();
+/* inclinación 3D al mover el ratón */
+(()=>{
+  if(!matchMedia("(pointer:fine)").matches||matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const sel=".proj,.sk-card,.year,.spec,.duo>div";
+  document.addEventListener("pointermove",e=>{
+    const el=e.target.closest(sel); if(!el)return;
+    const r=el.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    el.style.setProperty("--ry",(x*8).toFixed(2)+"deg"); el.style.setProperty("--rx",(-y*8).toFixed(2)+"deg");
+  });
+  document.addEventListener("pointerout",e=>{
+    const el=e.target.closest(sel); if(el&&!el.contains(e.relatedTarget)){el.style.removeProperty("--rx");el.style.removeProperty("--ry");}
+  });
+})();
+</script>
+</body>
+</html>
